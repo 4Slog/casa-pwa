@@ -1,5 +1,87 @@
-/**
- * Casa de Sowu v2.0
- * Transitions & Micro-interactions
- * TODO: Implement in T115
- */
+/* Casa de Sowu PWA v2.0 - Animations */
+
+.glass-card, .device-card, .nav-pill, .ctrl-btn, .playlist-btn, .temp-btn, .speaker-item, button {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, opacity 0.2s ease;
+}
+
+.pages-wrapper { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.dynamic-island { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.island-center { transition: transform 0.3s ease, opacity 0.3s ease; }
+.dynamic-island.expanded .island-center { animation: islandPulse 0.5s ease; }
+@keyframes islandPulse { 0% { transform: scale(0.95); opacity: 0; } 50% { transform: scale(1.02); } 100% { transform: scale(1); opacity: 1; } }
+.island-context { animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.device-card:hover, .playlist-btn:hover, .family-card:hover { transform: translateY(-4px); }
+.device-card:active, .glass-card:active:not(.weather-card):not(.thermostat-card) { transform: scale(0.97); }
+.device-card.toggling { animation: togglePulse 0.3s ease; }
+@keyframes togglePulse { 0% { transform: scale(1); } 50% { transform: scale(0.95); } 100% { transform: scale(1); } }
+.device-glow { transition: opacity 0.4s ease; }
+.device-icon { transition: color 0.3s ease, filter 0.3s ease, transform 0.3s ease; }
+.device-card.on .device-icon { animation: iconGlow 0.5s ease; }
+@keyframes iconGlow { 0% { filter: drop-shadow(0 0 0 transparent); } 50% { filter: drop-shadow(0 0 20px currentColor); } 100% { filter: drop-shadow(0 0 10px currentColor); } }
+.device-icon .mdi.spinning { animation: fanSpin 2s linear infinite; }
+@keyframes fanSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.album-art img { animation: albumFade 0.5s ease; }
+@keyframes albumFade { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+.media-bg { transition: opacity 0.5s ease, background-image 0.5s ease; }
+.ctrl-btn-main:active { animation: playPulse 0.3s ease; }
+@keyframes playPulse { 0% { transform: scale(1); } 50% { transform: scale(0.9); } 100% { transform: scale(1); } }
+.progress-handle, .volume-handle { transition: opacity 0.2s ease, transform 0.1s ease; }
+.progress-bar:active .progress-handle, .volume-bar:active .volume-handle { transform: translate(-50%, -50%) scale(1.2); }
+
+.nav-pill { transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.3s ease; }
+.nav-pill:active { transform: scale(0.95); }
+.nav-pill.active { animation: navActive 0.3s ease; }
+@keyframes navActive { 0% { transform: scale(0.95); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+.magic-fab { transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease; }
+.magic-fab:hover { animation: fabFloat 2s ease-in-out infinite; }
+@keyframes fabFloat { 0%, 100% { transform: scale(1.1) translateY(0); } 50% { transform: scale(1.1) translateY(-5px); } }
+.magic-fab .mdi { transition: transform 0.3s ease; }
+.magic-fab:active .mdi { transform: rotate(15deg); }
+
+.mdi-spin, .mdi-loading { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.skeleton { background: linear-gradient(90deg, var(--glass-bg) 0%, var(--glass-highlight) 50%, var(--glass-bg) 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+
+.connection-banner { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.person-marker { transition: transform 0.3s ease; }
+.person-marker.driving { animation: drivingPulse 1.5s infinite; }
+@keyframes drivingPulse { 0%, 100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); } 50% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 0 8px rgba(79, 172, 254, 0.3), 0 0 0 16px rgba(79, 172, 254, 0.1); } }
+
+.family-card { transition: border-color 0.3s ease, transform 0.2s ease; }
+.family-avatar { transition: transform 0.3s ease; }
+.family-card:hover .family-avatar { transform: scale(1.05); }
+.toggle-switch { transition: background 0.3s ease; }
+.toggle-knob { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.camera-thumb { transition: transform 0.2s ease; }
+.camera-thumb:hover { transform: scale(1.03); }
+.camera-stream img, .camera-thumb img { transition: opacity 0.3s ease; }
+
+.weather-icon { animation: weatherFloat 3s ease-in-out infinite; }
+@keyframes weatherFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+body::before { animation: meshShift 30s ease-in-out infinite; }
+@keyframes meshShift { 0%, 100% { opacity: 1; transform: scale(1); } 33% { opacity: 0.8; transform: scale(1.05) translateX(2%); } 66% { opacity: 0.9; transform: scale(1.08) translateX(-2%); } }
+
+body.morning::before { background: radial-gradient(ellipse at 80% 20%, rgba(255, 200, 100, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 20% 80%, rgba(255, 150, 100, 0.1) 0%, transparent 50%); }
+body.afternoon::before { background: radial-gradient(ellipse at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(79, 172, 254, 0.1) 0%, transparent 50%); }
+body.evening::before { background: radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.2) 0%, transparent 50%), radial-gradient(ellipse at 20% 20%, rgba(250, 112, 154, 0.1) 0%, transparent 50%); }
+body.night::before { background: radial-gradient(ellipse at 50% 50%, rgba(20, 20, 40, 0.3) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(79, 172, 254, 0.05) 0%, transparent 50%); }
+
+.device-card.on { animation: neonPulse 3s ease-in-out infinite; }
+@keyframes neonPulse { 0%, 100% { box-shadow: 0 0 0 transparent; } 50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.05); } }
+
+.nav-pill.active, .ctrl-btn-main, .magic-fab { animation: accentGlow 2s ease-in-out infinite; }
+@keyframes accentGlow { 0%, 100% { box-shadow: var(--glow-purple); } 50% { box-shadow: 0 0 25px rgba(102, 126, 234, 0.5), 0 0 50px rgba(102, 126, 234, 0.3); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  body::before { animation: none; }
+}

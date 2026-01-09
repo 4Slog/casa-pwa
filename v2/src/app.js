@@ -1,67 +1,164 @@
-/**
- * Casa de Sowu PWA v2.0
- * Main Application Entry Point
- */
-
 import { API } from './api.js';
 import { Store } from './store.js';
 import { Config } from './config.js';
 import { initComponents } from './components/index.js';
 
-class CasaDeSowuApp {
+class CasaPWA {
   constructor() {
-    this.api = null;
     this.store = null;
+    this.api = null;
     this.config = null;
     this.initialized = false;
   }
 
   async init() {
-    console.log('🏠 Casa de Sowu v2.0 initializing...');
+    console.log('🏠 Casa de Sowu PWA v2.0 starting...');
+    try {
+      this.config = new Config();
+      await this.config.load();
+      console.log('📋 Config loaded');
 
-    // Load configuration
-    this.config = new Config();
-    await this.config.load();
+      this.store = new Store();
+      this.store.set('ui.currentPage', 'lights');
+      this.store.set('connection.status', 'disconnected');
+      console.log('🗄️ Store initialized');
 
-    // Initialize state store
-    this.store = new Store();
+      this.api = new API(this.config, this.store);
 
-    // Initialize API
-    this.api = new API(this.config, this.store);
+      // Check for OAuth callback
+      await this.handleOAuthCallback();
 
-    // Initialize UI components
-    initComponents(this.store, this.api, this.config);
+      // Check for existing auth
+      if (this.api.hasValidToken()) {
+        this.showApp();
+        await this.api.connect();
+      } else {
+        this.showSetup();
+      }
 
-    // Check for existing auth
-    if (this.api.hasValidToken()) {
-      this.showMainApp();
-      await this.api.connect();
-    } else {
-      this.showSetupScreen();
+      this.updateTimeOfDay();
+      setInterval(() => this.updateTimeOfDay(), 60000);
+      this.registerServiceWorker();
+    } catch (error) {
+      console.error('❌ Initialization failed:', error);
+      this.showSetup();
     }
-
-    this.initialized = true;
-    console.log('✅ Casa de Sowu v2.0 ready!');
   }
 
-  showSetupScreen() {
+  async handleOAuthCallback() {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) {
+      console.log('🔐 OAuth callback detected');
+      window.history.replaceState({}, document.title, window.location.pathname);
+      try {
+        const success = await this.api.handleOAuthCallback();
+        if (success) {
+          console.log('✅ OAuth successful');
+        }
+      } catch (e) {
+        console.error('OAuth failed:', e);
+        this.updateStatus('Authentication failed. Please try again.', 'error');
+      }
+    }
+  }
+
+  showSetup() {
     document.getElementById('setup-screen')?.classList.remove('hidden');
     document.getElementById('main-app')?.classList.add('hidden');
+    document.getElementById('magic-fab')?.classList.add('hidden');
+
+    document.getElementById('btn-oauth')?.addEventListener('click', () => this.startOAuth());
+    document.getElementById('btn-token')?.addEventListener('click', () => {
+      document.getElementById('token-form')?.classList.toggle('hidden');
+    });
+    document.getElementById('token-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = document.getElementById('token-input')?.value?.trim();
+      if (token) {
+        this.api.setToken(token);
+        this.showApp();
+        await this.api.connect();
+      }
+    });
   }
 
-  showMainApp() {
+  showApp() {
     document.getElementById('setup-screen')?.classList.add('hidden');
     document.getElementById('main-app')?.classList.remove('hidden');
     document.getElementById('magic-fab')?.classList.remove('hidden');
+
+    if (!this.initialized) {
+      initComponents(this.store, this.api, this.config);
+      this.initialized = true;
+      console.log('✅ Casa de Sowu PWA v2.0 ready!');
+    }
+
+    // Set up connection status listener
+    this.store.subscribe('connection.status', (status) => this.handleConnectionChange(status));
+  }
+
+  startOAuth() {
+    this.updateStatus('Redirecting to Home Assistant...', 'loading');
+    this.api.startOAuthFlow();
+  }
+
+  handleConnectionChange(status) {
+    const banner = document.getElementById('connection-banner');
+    if (!banner) return;
+
+    if (status === 'disconnected' || status === 'reconnecting') {
+      banner.classList.remove('hidden');
+      banner.innerHTML = status === 'reconnecting'
+        ? '<span class="mdi mdi-loading mdi-spin"></span> Reconnecting...'
+        : '<span class="mdi mdi-wifi-off"></span> Disconnected';
+    } else if (status === 'authenticated') {
+      banner.classList.add('hidden');
+    }
+  }
+
+  updateStatus(message, type = 'info') {
+    const el = document.getElementById('login-status');
+    if (el) {
+      el.textContent = message;
+      el.className = 'login-status ' + type;
+    }
+  }
+
+  updateTimeOfDay() {
+    const hr = new Date().getHours();
+    const body = document.body;
+    body.classList.remove('morning', 'afternoon', 'evening', 'night');
+    if (hr >= 6 && hr < 12) body.classList.add('morning');
+    else if (hr >= 12 && hr < 17) body.classList.add('afternoon');
+    else if (hr >= 17 && hr < 21) body.classList.add('evening');
+    else body.classList.add('night');
+  }
+
+  async registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.register('/v2/sw.js');
+        console.log('📦 Service Worker registered:', reg.scope);
+      } catch (e) {
+        console.warn('SW registration failed:', e);
+      }
+    }
+  }
+
+  // Public API for debugging
+  debug() {
+    console.log('Config:', this.config.get());
+    console.log('Store:', this.store.debug());
+    console.log('API connected:', this.api?.connected);
   }
 }
 
 // Initialize on DOM ready
-const app = new CasaDeSowuApp();
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => app.init());
-} else {
-  app.init();
-}
+document.addEventListener('DOMContentLoaded', async () => {
+  const app = new CasaPWA();
+  await app.init();
+  window.casa = app;
+});
 
-export { app };
+export { CasaPWA };
