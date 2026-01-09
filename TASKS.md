@@ -29,7 +29,7 @@
 - [x] **T110** - Build src/components/MediaPlayer.js (full-screen art)
 - [x] **T111** - Build src/components/WeatherCard.js
 - [x] **T112** - Build src/components/FamilyMap.js
-- [ ] **T113** - Build src/components/CameraGrid.js
+- [x] **T113** - Build src/components/CameraGrid.js
 
 ### Styling (T114-T116)
 - [ ] **T114** - Create css/glass.css (Deep Glass & Neon theme)
@@ -97,6 +97,7 @@
 | Task | Description | Completed |
 |------|-------------|-----------|
 | T001 | Project setup and infrastructure | 2026-01-09 |
+| T113 | ### UI Components (T108-T113) | 2026-01-09 |
 | T112 | ### UI Components (T108-T113) | 2026-01-09 |
 | T111 | ### UI Components (T108-T113) | 2026-01-09 |
 | T110 | ### UI Components (T108-T113) | 2026-01-09 |
