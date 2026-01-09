@@ -36,30 +36,62 @@ function renderLightsPage(store, api, config) {
 function initNavigation(store, comps) {
   const pills = document.querySelectorAll('.nav-pill');
   const pages = ['media', 'lights', 'climate', 'calendar', 'family', 'cameras'];
+
+  // Scroll active pill into view on load (for mobile)
+  setTimeout(() => {
+    const activePill = document.querySelector('.nav-pill.active');
+    if (activePill) {
+      activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }, 200);
+
   pills.forEach(pill => {
     pill.addEventListener('click', () => {
       const pg = pill.dataset.page;
       pills.forEach(p => p.classList.toggle('active', p.dataset.page === pg));
       store.set('ui.currentPage', pg);
+
+      // Scroll clicked pill into view
+      pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
       const w = document.getElementById('pages-wrapper');
       const i = pages.indexOf(pg);
       if (w && i >= 0) w.style.transform = 'translateX(-' + (i * (100 / pages.length)) + '%)';
-      if (pg === 'cameras') comps.cameras?.startRefresh(); else comps.cameras?.stopRefresh();
-      if (pg === 'family' && comps.family?.map) setTimeout(() => { comps.family.map.invalidateSize(); comps.family.fitBounds(); }, 300);
+
+      // Page-specific actions
+      if (pg === 'cameras') comps.cameras?.startRefresh();
+      else comps.cameras?.stopRefresh();
+
+      if (pg === 'family' && comps.family?.map) {
+        setTimeout(() => {
+          comps.family.map.invalidateSize();
+          comps.family.fitBounds();
+        }, 300);
+      }
     });
   });
 
-  // Swipe navigation
+  // Swipe navigation for mobile
   let touchStartX = 0;
   const wrapper = document.getElementById('pages-wrapper');
-  wrapper?.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+
+  wrapper?.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
   wrapper?.addEventListener('touchend', (e) => {
     const diff = touchStartX - e.changedTouches[0].screenX;
     const currentPage = store.get('ui.currentPage');
     const currentIndex = pages.indexOf(currentPage);
+
     if (Math.abs(diff) > 50) {
-      if (diff > 0 && currentIndex < pages.length - 1) document.querySelector('[data-page="' + pages[currentIndex + 1] + '"]')?.click();
-      else if (diff < 0 && currentIndex > 0) document.querySelector('[data-page="' + pages[currentIndex - 1] + '"]')?.click();
+      if (diff > 0 && currentIndex < pages.length - 1) {
+        // Swipe left - next page
+        document.querySelector('[data-page="' + pages[currentIndex + 1] + '"]')?.click();
+      } else if (diff < 0 && currentIndex > 0) {
+        // Swipe right - previous page
+        document.querySelector('[data-page="' + pages[currentIndex - 1] + '"]')?.click();
+      }
     }
   }, { passive: true });
 }
@@ -67,23 +99,50 @@ function initNavigation(store, comps) {
 function initMagicFab(store, api, config) {
   const fab = document.getElementById('magic-fab');
   if (!fab) return;
+
   const update = () => {
     const hr = new Date().getHours();
     const pg = store.get('ui.currentPage');
     const spId = config.get('entities.media.spotify');
     const sp = store.getEntity(spId);
     let icon = 'lightning-bolt', act = null;
-    if (pg === 'media' && sp?.state === 'playing') { icon = 'pause'; act = () => api.mediaPlayPause(spId); }
-    else if (hr >= 6 && hr < 10) { icon = 'weather-sunny'; act = () => api.callService('script', 'turn_on', { entity_id: 'script.good_morning' }); }
-    else if (hr >= 22 || hr < 6) { icon = 'weather-night'; act = () => api.callService('script', 'turn_on', { entity_id: 'script.goodnight' }); }
-    else { icon = 'home'; act = () => api.callService('script', 'turn_on', { entity_id: 'script.toggle_main_lights' }); }
+
+    if (pg === 'media' && sp?.state === 'playing') {
+      icon = 'pause';
+      act = () => api.mediaPlayPause(spId);
+    } else if (pg === 'lights') {
+      icon = 'lightbulb-group';
+      act = () => toggleCommonArea(api, config, store);
+    } else if (hr >= 6 && hr < 10) {
+      icon = 'weather-sunny';
+      act = () => api.callService('script', 'turn_on', { entity_id: 'script.good_morning' });
+    } else if (hr >= 22 || hr < 6) {
+      icon = 'weather-night';
+      act = () => api.callService('script', 'turn_on', { entity_id: 'script.goodnight' });
+    } else {
+      icon = 'home';
+      act = () => toggleCommonArea(api, config, store);
+    }
+
     fab.innerHTML = '<span class="mdi mdi-' + icon + '"></span>';
     fab.onclick = act;
   };
+
   store.subscribe('ui.currentPage', update);
   store.subscribe('entities', update);
   update();
   setInterval(update, 60000);
+}
+
+function toggleCommonArea(api, config, store) {
+  const group = config.get('entities.lights.groups')?.find(g => g.name === 'Common Area');
+  if (group) {
+    const anyOn = group.entities.some(id => store.isEntityOn(id));
+    group.entities.forEach(id => {
+      const isOn = store.isEntityOn(id);
+      if ((anyOn && isOn) || (!anyOn && !isOn)) api.toggleEntity(id);
+    });
+  }
 }
 
 export { components };

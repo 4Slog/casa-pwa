@@ -532,3 +532,40 @@ body::before {
 .todo-item .mdi {
   color: var(--accent-green);
 }
+
+/* ============================================
+   BUG FIXES - Nav Scroll + Camera Errors
+   ============================================ */
+
+/* Ensure first nav pill is visible on mobile */
+.nav-pills {
+  scroll-behavior: smooth;
+  scroll-padding-left: var(--space-md);
+}
+
+/* Camera error state */
+.camera-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.camera-error .mdi {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+.camera-stream, .camera-thumb {
+  position: relative;
+}
+
+.camera-stream img, .camera-thumb img {
+  display: block;
+}
