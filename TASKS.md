@@ -28,7 +28,7 @@
 - [x] **T109** - Build src/components/DeviceCard.js (glassmorphism cards)
 - [x] **T110** - Build src/components/MediaPlayer.js (full-screen art)
 - [x] **T111** - Build src/components/WeatherCard.js
-- [ ] **T112** - Build src/components/FamilyMap.js
+- [x] **T112** - Build src/components/FamilyMap.js
 - [ ] **T113** - Build src/components/CameraGrid.js
 
 ### Styling (T114-T116)
@@ -97,6 +97,7 @@
 | Task | Description | Completed |
 |------|-------------|-----------|
 | T001 | Project setup and infrastructure | 2026-01-09 |
+| T112 | ### UI Components (T108-T113) | 2026-01-09 |
 | T111 | ### UI Components (T108-T113) | 2026-01-09 |
 | T110 | ### UI Components (T108-T113) | 2026-01-09 |
 | T109 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
