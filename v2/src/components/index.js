@@ -4,6 +4,7 @@ import { MediaPlayer } from './MediaPlayer.js';
 import { WeatherCard } from './WeatherCard.js';
 import { FamilyMap } from './FamilyMap.js';
 import { CameraGrid } from './CameraGrid.js';
+import { CalendarCard } from './CalendarCard.js';
 
 let components = {};
 
@@ -12,6 +13,7 @@ export function initComponents(store, api, config) {
   components.header = new Header(store, api, config);
   components.media = new MediaPlayer(store, api, config);
   components.weather = new WeatherCard(store, api, config);
+  components.calendar = new CalendarCard(store, api, config);
   components.family = new FamilyMap(store, api, config);
   components.cameras = new CameraGrid(store, api, config);
   renderLightsPage(store, api, config);
@@ -46,6 +48,20 @@ function initNavigation(store, comps) {
       if (pg === 'family' && comps.family?.map) setTimeout(() => { comps.family.map.invalidateSize(); comps.family.fitBounds(); }, 300);
     });
   });
+
+  // Swipe navigation
+  let touchStartX = 0;
+  const wrapper = document.getElementById('pages-wrapper');
+  wrapper?.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  wrapper?.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].screenX;
+    const currentPage = store.get('ui.currentPage');
+    const currentIndex = pages.indexOf(currentPage);
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && currentIndex < pages.length - 1) document.querySelector('[data-page="' + pages[currentIndex + 1] + '"]')?.click();
+      else if (diff < 0 && currentIndex > 0) document.querySelector('[data-page="' + pages[currentIndex - 1] + '"]')?.click();
+    }
+  }, { passive: true });
 }
 
 function initMagicFab(store, api, config) {

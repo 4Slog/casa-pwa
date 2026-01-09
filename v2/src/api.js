@@ -506,4 +506,42 @@ export class API {
     const haUrl = this.config.get('app.haUrl');
     return `${haUrl}/api/camera_proxy/${entityId}?token=${this.accessToken}&t=${Date.now()}`;
   }
+
+  // Calendar Events (REST API)
+  async getCalendarEvents(entityId, start, end) {
+    if (!this.accessToken) return [];
+    try {
+      const haUrl = this.config.get('app.haUrl');
+      const url = `${haUrl}/api/calendars/${entityId}?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
+      const resp = await fetch(url, {
+        headers: { 'Authorization': 'Bearer ' + this.accessToken, 'Content-Type': 'application/json' }
+      });
+      if (!resp.ok) throw new Error('Calendar fetch failed: ' + resp.status);
+      return await resp.json();
+    } catch (e) {
+      console.error('getCalendarEvents error:', e);
+      return [];
+    }
+  }
+
+  // Todo Items (REST API)
+  async getTodoItems(entityId) {
+    if (!this.accessToken) return [];
+    try {
+      const haUrl = this.config.get('app.haUrl');
+      // Use the todo.get_items service via REST API
+      const resp = await fetch(`${haUrl}/api/services/todo/get_items`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + this.accessToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entity_id: entityId })
+      });
+      if (!resp.ok) throw new Error('Todo fetch failed: ' + resp.status);
+      const data = await resp.json();
+      // Response contains items in the entity's response
+      return data?.[entityId]?.items || [];
+    } catch (e) {
+      console.error('getTodoItems error:', e);
+      return [];
+    }
+  }
 }
