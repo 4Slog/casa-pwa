@@ -248,3 +248,10 @@ curl -s -i --http1.1 \
   -H "Sec-WebSocket-Version: 13" \
   https://ha.casadesowu.com/api/websocket
 ```
+
+### Session: 2026-01-09 17:00
+- Completed T104-T107 (Core Modules)
+- api.js: Full WebSocket, OAuth, service calls
+- store.js: Reactive Pub/Sub state management
+- config.js: JSON config loader with dot notation
+- utils.js: Formatters, helpers, DOM utilities

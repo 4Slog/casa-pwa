@@ -24,7 +24,7 @@
 - [x] **T107** - Build src/utils.js (formatters, helpers)
 
 ### UI Components (T108-T113)
-- [ ] **T108** - Build src/components/Header.js (Dynamic Island)
+- [x] **T108** - Build src/components/Header.js (Dynamic Island)
 - [ ] **T109** - Build src/components/DeviceCard.js (glassmorphism cards)
 - [ ] **T110** - Build src/components/MediaPlayer.js (full-screen art)
 - [ ] **T111** - Build src/components/WeatherCard.js
@@ -97,6 +97,7 @@
 | Task | Description | Completed |
 |------|-------------|-----------|
 | T001 | Project setup and infrastructure | 2026-01-09 |
+| T108 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T107 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T106 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T105 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
