@@ -19,7 +19,7 @@
 
 ### Core Modules (T104-T107)
 - [x] **T104** - Build src/api.js (WebSocket, auth, service calls)
-- [ ] **T105** - Build src/store.js (reactive state with Pub/Sub)
+- [x] **T105** - Build src/store.js (reactive state with Pub/Sub)
 - [ ] **T106** - Build src/config.js (static configuration)
 - [ ] **T107** - Build src/utils.js (formatters, helpers)
 
@@ -97,6 +97,7 @@
 | Task | Description | Completed |
 |------|-------------|-----------|
 | T001 | Project setup and infrastructure | 2026-01-09 |
+| T105 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T104 | Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T101 | Create src/ directory structure and ES6 module skeleton | 2026-01-09 |
 | T102 | Create config/dashboard-config.json with all entities | 2026-01-09 |
