@@ -21,7 +21,7 @@
 - [x] **T104** - Build src/api.js (WebSocket, auth, service calls)
 - [x] **T105** - Build src/store.js (reactive state with Pub/Sub)
 - [x] **T106** - Build src/config.js (static configuration)
-- [ ] **T107** - Build src/utils.js (formatters, helpers)
+- [x] **T107** - Build src/utils.js (formatters, helpers)
 
 ### UI Components (T108-T113)
 - [ ] **T108** - Build src/components/Header.js (Dynamic Island)
@@ -97,6 +97,7 @@
 | Task | Description | Completed |
 |------|-------------|-----------|
 | T001 | Project setup and infrastructure | 2026-01-09 |
+| T107 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T106 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T105 | **T104** - Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
 | T104 | Build src/api.js (WebSocket, auth, service calls) | 2026-01-09 |
