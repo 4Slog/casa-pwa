@@ -32,7 +32,7 @@
 - [x] **T113** - Build src/components/CameraGrid.js
 
 ### Styling (T114-T116)
-- [ ] **T114** - Create css/glass.css (Deep Glass & Neon theme)
+- [x] **T114** - Create css/glass.css (Deep Glass & Neon theme)
 - [ ] **T115** - Create css/animations.css (transitions, micro-interactions)
 - [ ] **T116** - Add Magic Button FAB with context-aware actions
 
@@ -97,6 +97,7 @@
 | Task | Description | Completed |
 |------|-------------|-----------|
 | T001 | Project setup and infrastructure | 2026-01-09 |
+| T114 | ### UI Components (T108-T113) | 2026-01-09 |
 | T113 | ### UI Components (T108-T113) | 2026-01-09 |
 | T112 | ### UI Components (T108-T113) | 2026-01-09 |
 | T111 | ### UI Components (T108-T113) | 2026-01-09 |
