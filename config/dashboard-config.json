@@ -1,0 +1,106 @@
+{
+  "app": {
+    "name": "Casa de Sowu",
+    "version": "2.0.0",
+    "haUrl": "https://ha.casadesowu.com",
+    "wsUrl": "wss://ha.casadesowu.com/api/websocket"
+  },
+  "home": {
+    "coords": [33.3552, -82.1134],
+    "name": "Casa de Sowu"
+  },
+  "entities": {
+    "media": {
+      "spotify": "media_player.spotify_paul_sowu",
+      "spotifyPlus": "media_player.spotifyplus_paul_sowu",
+      "speakers": [
+        { "id": "media_player.great_room_dot", "name": "Great Room Dot", "icon": "speaker", "type": "alexa" },
+        { "id": "media_player.office", "name": "Great Room Show", "icon": "tablet", "type": "alexa" },
+        { "id": "media_player.living_room_tv", "name": "Living Room TV", "icon": "television", "type": "cast" },
+        { "id": "media_player.living_room", "name": "Living Room", "icon": "speaker", "type": "alexa" },
+        { "id": "media_player.show_8", "name": "Show 8", "icon": "tablet", "type": "alexa" },
+        { "id": "media_player.mauriece_dot", "name": "Mauriece Dot", "icon": "speaker", "type": "alexa" },
+        { "id": "media_player.vlc_telnet", "name": "Server Speaker", "icon": "bluetooth-audio", "type": "vlc" }
+      ]
+    },
+    "lights": {
+      "groups": [
+        {
+          "name": "Common Area",
+          "icon": "lightbulb-multiple",
+          "type": "group",
+          "entities": [
+            "light.great_room_fan_and_light",
+            "light.dining_room_main_light",
+            "light.kitchen_light_switch",
+            "switch.master_hallway"
+          ]
+        }
+      ],
+      "devices": [
+        { "id": "light.great_room_fan_and_light", "name": "Great Room", "icon": "lightbulb", "room": "great_room", "dimmable": true },
+        { "id": "fan.great_room_fan_and_light", "name": "Great Room Fan", "icon": "fan", "room": "great_room", "type": "fan" },
+        { "id": "light.dining_room_main_light", "name": "Dining Room", "icon": "lightbulb", "room": "dining", "dimmable": true },
+        { "id": "fan.dining_room_main_fan", "name": "Dining Fan", "icon": "fan", "room": "dining", "type": "fan" },
+        { "id": "light.kitchen_light_switch", "name": "Kitchen", "icon": "lightbulb", "room": "kitchen", "dimmable": false },
+        { "id": "switch.master_hallway", "name": "Master Hallway", "icon": "lightbulb", "room": "master", "type": "switch" },
+        { "id": "light.master_bedroom", "name": "Master Bedroom", "icon": "lightbulb", "room": "master", "dimmable": true },
+        { "id": "fan.master_bedroom", "name": "Master Fan", "icon": "fan", "room": "master", "type": "fan" },
+        { "id": "cover.blind_tilt_5b8c", "name": "Study Blinds", "icon": "blinds", "room": "study", "type": "cover" }
+      ]
+    },
+    "climate": {
+      "thermostat": "climate.thermostat",
+      "autoComfort": "input_boolean.hvac_auto_comfort",
+      "weather": "weather.forecast_home",
+      "sensors": [
+        { "id": "sensor.lumi_lumi_weather_temperature", "name": "Master Bedroom", "room": "master" },
+        { "id": "sensor.temp_bedroom_wing_temperature", "name": "Galley", "room": "galley" },
+        { "id": "sensor.temp_bedroom_wing_temperature_2", "name": "Blue Room", "room": "blue" },
+        { "id": "sensor.average_home_temperature", "name": "Average", "highlight": true }
+      ]
+    },
+    "family": [
+      { "person": "person.paul", "tracker": "device_tracker.paul_360", "name": "Paul", "color": "#667eea", "initial": "P" },
+      { "person": "person.tuella_sowu", "tracker": "device_tracker.tuella_360", "name": "Tuella", "color": "#f093fb", "initial": "T" },
+      { "person": "person.mauriece", "tracker": "device_tracker.mauriece_360", "name": "Mauriece", "color": "#4facfe", "initial": "M" }
+    ],
+    "cameras": [
+      { "id": "camera.10_0_0_60", "name": "Front Door", "featured": true },
+      { "id": "camera.wyze_cam", "name": "Wyze Cam" },
+      { "id": "camera.pan_cam", "name": "Pan Cam" },
+      { "id": "camera.redbase", "name": "Redbase" }
+    ],
+    "calendars": [
+      "calendar.thesowus_gmail_com",
+      "calendar.sowu_paul_gmail_com",
+      "calendar.family",
+      "calendar.augusta_eagles_varsity_boys_basketball"
+    ],
+    "tasks": {
+      "house": "todo.house_tasks",
+      "paul": "todo.paul",
+      "tuella": "todo.tuella"
+    }
+  },
+  "playlists": {
+    "quick": [
+      { "name": "2010s Mix", "uri": "spotify:playlist:37i9dQZF1EQqedj0y9Uwvu", "icon": "music-note" },
+      { "name": "Old Afrobeats", "uri": "spotify:playlist:0pwtPFYePn1xdpavFkurnh", "icon": "music-circle" },
+      { "name": "Dancehall", "uri": "spotify:playlist:37i9dQZF1DWWDLvD3P5wOG", "icon": "palm-tree" },
+      { "name": "2025 Mix", "uri": "spotify:playlist:2pGzShubDBpEOhINK1g7ih", "icon": "fire" }
+    ]
+  },
+  "ui": {
+    "refreshIntervals": {
+      "camera": 2000,
+      "map": 10000,
+      "weather": 300000
+    },
+    "theme": {
+      "cardHeight": "200px",
+      "borderRadius": "16px",
+      "glassBlur": "12px"
+    }
+  }
+}
