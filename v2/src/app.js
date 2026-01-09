@@ -50,7 +50,7 @@ class CasaPWA {
     const code = params.get('code');
     if (code) {
       console.log('🔐 OAuth callback detected');
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // Note: Don't clear URL here - api.handleOAuthCallback() needs to read it
       try {
         const success = await this.api.handleOAuthCallback();
         if (success) {
@@ -68,13 +68,13 @@ class CasaPWA {
     document.getElementById('main-app')?.classList.add('hidden');
     document.getElementById('magic-fab')?.classList.add('hidden');
 
-    document.getElementById('btn-oauth')?.addEventListener('click', () => this.startOAuth());
-    document.getElementById('btn-token')?.addEventListener('click', () => {
-      document.getElementById('token-form')?.classList.toggle('hidden');
-    });
-    document.getElementById('token-form')?.addEventListener('submit', async (e) => {
+    // OAuth login button
+    document.getElementById('btn-login')?.addEventListener('click', () => this.startOAuth());
+
+    // Manual token form (in Advanced Setup)
+    document.getElementById('setup-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const token = document.getElementById('token-input')?.value?.trim();
+      const token = document.getElementById('ha-token')?.value?.trim();
       if (token) {
         this.api.setToken(token);
         this.showApp();
