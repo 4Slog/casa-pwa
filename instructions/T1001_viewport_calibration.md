@@ -1,3 +1,16 @@
+# T1001: Viewport Calibration Fix
+
+The previous fix caused a regression because `.page { width: 100% }` calculated 100% of the *wrapper* (600vw), making every page massive. This causes the "cut off" effect because the slide distance is too large.
+
+We will fix this by forcing the pages back to viewport width and using the window's visible client width for math.
+
+## 1. CSS Correction (v2/css/page-layout.css)
+
+Revert the `.page` width to `100vw` but ensure `overflow` is handled on the body to prevent scrollbars.
+
+Overwrite `v2/css/page-layout.css` with this content:
+
+```css
 /* T1001: VIEWPORT CALIBRATION RULES */
 
 /* 1. Global Safety - Kill scrollbars on the window itself */
@@ -45,3 +58,4 @@ html, body {
   margin: 0 !important;
   padding: 0 !important;
 }
+```
