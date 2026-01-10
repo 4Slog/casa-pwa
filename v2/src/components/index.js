@@ -59,7 +59,7 @@ function initNavigation(store, comps) {
 
       const w = document.getElementById('pages-wrapper');
       const i = pages.indexOf(pg);
-      if (w && i >= 0) w.style.transform = 'translateX(-' + (i * (100 / pages.length)) + '%)';
+      if (w && i >= 0) w.style.transform = 'translateX(-' + (i * 100) + 'vw)';
 
       // Page-specific actions
       if (pg === 'cameras') comps.cameras?.startRefresh();
