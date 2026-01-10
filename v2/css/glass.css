@@ -898,3 +898,137 @@ html, body {
   max-width: 100%;
   overflow: hidden;
 }
+
+/* ============================================
+   FINAL PAGE BLEED FIX - Viewport Units
+   ============================================ */
+
+/* Use viewport width for precise control */
+.pages-wrapper {
+  display: flex;
+  width: calc(6 * 100vw);
+  overflow: hidden !important;
+  overflow-x: clip !important;
+}
+
+.page {
+  flex: 0 0 100vw;
+  width: 100vw;
+  min-width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure page content never exceeds viewport */
+.page-content {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  box-sizing: border-box;
+}
+
+/* Section headers - full width but contained */
+.section-header {
+  width: auto;
+  max-width: none;
+  margin: 0 0 var(--space-md) 0;
+  box-sizing: border-box;
+}
+
+/* All containers must respect bounds */
+.family-page,
+.cameras-page,
+.media-page,
+.calendar-page,
+.climate-page,
+.lights-page {
+  max-width: 100vw;
+  overflow-x: hidden !important;
+}
+
+/* Map container - contained within page */
+.map-container {
+  width: min(66.67%, calc(100vw - var(--space-md) * 2));
+  max-width: 500px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Camera featured - contained within page */
+.camera-featured {
+  width: min(66.67%, calc(100vw - var(--space-md) * 2));
+  max-width: 500px;
+  margin: 0 auto var(--space-lg) auto;
+  box-sizing: border-box;
+}
+
+/* Family grid - no overflow */
+.family-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+  max-width: calc(100vw - var(--space-md) * 2);
+  overflow: hidden;
+}
+
+/* Speaker grid - prevent overflow */
+.speaker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  max-width: calc(100vw - var(--space-md) * 2);
+  overflow: hidden;
+}
+
+.speaker-item {
+  flex: 0 0 auto;
+  min-width: 120px;
+  max-width: 180px;
+}
+
+/* Camera grid thumbnails */
+.camera-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-md);
+  max-width: calc(100vw - var(--space-md) * 2);
+  margin: 0 auto;
+}
+
+/* ============================================
+   Force clip on pages with bleed issues
+   ============================================ */
+
+#page-family,
+#page-cameras,
+#page-media {
+  overflow: clip !important;
+  overflow-x: clip !important;
+  contain: layout style paint;
+}
+
+#page-family > .page-content,
+#page-cameras > .page-content,
+#page-media > .page-content {
+  overflow: clip !important;
+  overflow-x: clip !important;
+}
+
+/* Media player specific fixes */
+.media-player {
+  max-width: calc(100vw - var(--space-md) * 2);
+  margin: 0 auto;
+}
+
+.playback-controls {
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.progress-container,
+.volume-container {
+  max-width: 100%;
+  overflow: hidden;
+}
