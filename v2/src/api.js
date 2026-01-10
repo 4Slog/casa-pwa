@@ -98,7 +98,7 @@ export class API {
 
     const haUrl = this.config.get('app.haUrl');
     const redirectUri = window.location.origin + window.location.pathname;
-    const clientId = window.location.origin + '/';
+    const clientId = window.location.origin;
 
     const authUrl = new URL(`${haUrl}/auth/authorize`);
     authUrl.searchParams.set('client_id', clientId);
@@ -135,7 +135,7 @@ export class API {
     // Exchange code for token
     const haUrl = this.config.get('app.haUrl');
     const redirectUri = window.location.origin + window.location.pathname;
-    const clientId = window.location.origin + '/';
+    const clientId = window.location.origin;
 
     const response = await fetch(`${haUrl}/auth/token`, {
       method: 'POST',
@@ -162,7 +162,7 @@ export class API {
     if (!this.refreshToken) return false;
 
     const haUrl = this.config.get('app.haUrl');
-    const clientId = window.location.origin + '/';
+    const clientId = window.location.origin;
 
     try {
       const response = await fetch(`${haUrl}/auth/token`, {
