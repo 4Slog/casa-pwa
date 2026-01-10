@@ -1,7 +1,7 @@
-const CACHE_NAME = 'casa-v2.0.2';
+const CACHE_NAME = 'casa-v2.0.3';
 const ASSETS = [
   '/v2/', '/v2/index.html',
-  '/v2/css/glass.css', '/v2/css/animations.css',
+  '/v2/css/glass.css', '/v2/css/animations.css', '/v2/css/page-layout.css',
   '/v2/src/app.js', '/v2/src/api.js', '/v2/src/store.js', '/v2/src/config.js', '/v2/src/utils.js',
   '/v2/src/components/index.js', '/v2/src/components/Header.js', '/v2/src/components/DeviceCard.js',
   '/v2/src/components/MediaPlayer.js', '/v2/src/components/WeatherCard.js',
