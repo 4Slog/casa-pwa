@@ -3,7 +3,7 @@
     "name": "Casa de Sowu",
     "version": "2.0.0",
     "haUrl": "https://raacamhpmg3xilyhnsmev4vqhtdzyez4.ui.nabu.casa",
-    "wsUrl": "wss://raacamhpmg3xilyhnsmev4vqhtdzyez4.ui.nabu.casa/api/websocket",
+    "wsUrl": "wss://raacamhpmg3xilyhnsmev4vqhtdzyez4.ui.nabu.casa/api/websocket"
   },
   "home": {
     "coords": [33.3552, -82.1134],
