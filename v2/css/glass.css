@@ -569,3 +569,72 @@ body::before {
 .camera-stream img, .camera-thumb img {
   display: block;
 }
+
+/* ============================================
+   BUG FIX - Page Overflow/Bleed
+   ============================================ */
+
+/* Hide overflow on main app container */
+.main-app {
+  overflow: hidden;
+}
+
+/* Pages wrapper - exact width for 6 pages */
+.pages-wrapper {
+  display: flex;
+  width: 600%; /* Exactly 6 pages */
+  overflow: hidden;
+}
+
+/* Each page takes exactly 1/6 of wrapper (100% of viewport) */
+.page {
+  flex: 0 0 calc(100% / 6);
+  width: calc(100% / 6);
+  max-width: calc(100vw);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Ensure page content doesn't overflow horizontally */
+.page-content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Hide any horizontal scrollbar on pages */
+.page::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Section headers should not exceed page width */
+.section-header {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Family cards grid - prevent overflow */
+.family-grid {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Map container - constrain to page */
+.map-container {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Camera containers - constrain */
+.camera-featured,
+.camera-grid {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Calendar containers */
+.calendar-events,
+.calendar-week,
+.tasks-container {
+  max-width: 100%;
+  overflow: hidden;
+}
