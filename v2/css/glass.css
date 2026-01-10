@@ -830,3 +830,71 @@ body::before {
     padding: var(--space-md);
   }
 }
+
+/* ============================================
+   NUCLEAR OVERFLOW FIX - No More Page Bleed
+   ============================================ */
+
+/* Root level containment */
+html, body {
+  overflow: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+}
+
+#app {
+  overflow: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+}
+
+.main-app {
+  overflow: hidden !important;
+  width: 100%;
+  max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pages wrapper - use clip instead of hidden */
+.pages-wrapper {
+  display: flex;
+  width: 600%;
+  overflow: clip !important;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Each page - strict containment */
+.page {
+  flex: 0 0 calc(100% / 6);
+  width: calc(100% / 6);
+  min-width: 0;
+  max-width: calc(100vw);
+  overflow-x: clip !important;
+  overflow-y: auto;
+  contain: strict;
+}
+
+/* Page content */
+.page-content {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip !important;
+  padding: var(--space-md);
+  padding-bottom: calc(var(--space-xl) + var(--safe-bottom) + 80px);
+}
+
+/* All grids and containers */
+.device-grid,
+.speaker-grid,
+.playlist-grid,
+.weather-grid,
+.room-temps-grid,
+.family-grid,
+.camera-grid,
+.tasks-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}

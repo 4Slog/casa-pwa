@@ -2,55 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#050508">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#0a0a0f">
-  <meta name="description" content="Casa de Sowu Smart Home Control v2.0">
-
   <title>Casa de Sowu</title>
-
   <link rel="manifest" href="../manifest.json">
-  <link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
+  <link rel="icon" type="image/png" href="../icons/icon-192.png">
   <link rel="apple-touch-icon" href="../icons/icon-192.png">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Material Design Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
-
-  <!-- Leaflet Maps -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <!-- v2.0 Styles -->
   <link rel="stylesheet" href="css/glass.css">
   <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
   <div id="app">
-    <!-- Connection Status -->
-    <div id="connection-banner" class="connection-banner hidden">
-      <span class="mdi mdi-wifi-off"></span>
-      <span>Reconnecting to Home Assistant...</span>
-    </div>
-
-    <!-- Dynamic Island Header -->
-    <header id="dynamic-island" class="dynamic-island">
-      <div class="island-left">
-        <span class="island-time" id="island-time">--:--</span>
-      </div>
-      <div class="island-center" id="island-center">
-        <span class="island-greeting" id="island-greeting">Casa de Sowu</span>
-      </div>
-      <div class="island-right">
-        <span class="island-date" id="island-date">---</span>
-      </div>
-    </header>
-
     <!-- Setup Screen -->
     <div id="setup-screen" class="setup-screen">
       <div class="setup-container glass-card">
@@ -58,43 +27,48 @@
           <span class="mdi mdi-home-automation"></span>
         </div>
         <h1>Casa de Sowu</h1>
-        <p>Smart Home Control v2.0</p>
-
-        <button type="button" class="btn-primary" id="btn-login">
-          <span class="mdi mdi-login"></span>
+        <p>Connect to your smart home</p>
+        <button id="btn-login" class="btn-primary">
+          <span class="mdi mdi-home-assistant"></span>
           Sign in with Home Assistant
         </button>
-
-        <div class="login-status" id="login-status"></div>
-
         <details class="advanced-setup">
           <summary>Advanced Setup</summary>
           <form id="setup-form">
             <div class="input-group">
-              <label for="ha-url">Home Assistant URL</label>
-              <input type="url" id="ha-url" value="https://ha.casadesowu.com" required>
-            </div>
-            <div class="input-group">
               <label for="ha-token">Long-Lived Access Token</label>
-              <input type="password" id="ha-token" placeholder="Paste your token here" required>
+              <input type="password" id="ha-token" placeholder="Paste your token here">
             </div>
-            <button type="submit" class="btn-secondary">
-              <span class="mdi mdi-connection"></span>
-              Connect with Token
-            </button>
+            <button type="submit" class="btn-secondary">Connect with Token</button>
           </form>
         </details>
+        <div id="login-status" class="login-status"></div>
       </div>
     </div>
 
     <!-- Main App -->
-    <main id="main-app" class="main-app hidden">
-      <!-- Navigation Pills -->
-      <nav class="nav-pills" id="nav-pills">
-        <button class="nav-pill" data-page="media">
-          <span class="mdi mdi-music"></span>
-          <span>Media</span>
-        </button>
+    <div id="main-app" class="main-app hidden">
+      <!-- Connection Banner -->
+      <div id="connection-banner" class="connection-banner hidden">
+        <span class="mdi mdi-wifi-off"></span>
+        <span>Reconnecting...</span>
+      </div>
+
+      <!-- Dynamic Island Header -->
+      <header id="dynamic-island" class="dynamic-island">
+        <div class="island-left">
+          <span id="island-time" class="island-time">12:00 PM</span>
+        </div>
+        <div id="island-center" class="island-center">
+          <span id="island-greeting" class="island-greeting">Good morning</span>
+        </div>
+        <div class="island-right">
+          <span id="island-date" class="island-date">Mon, Jan 1</span>
+        </div>
+      </header>
+
+      <!-- Navigation Pills - NEW ORDER -->
+      <nav class="nav-pills">
         <button class="nav-pill active" data-page="lights">
           <span class="mdi mdi-lightbulb-group"></span>
           <span>Lights</span>
@@ -108,37 +82,48 @@
           <span>Calendar</span>
         </button>
         <button class="nav-pill" data-page="family">
-          <span class="mdi mdi-map-marker"></span>
+          <span class="mdi mdi-map-marker-account"></span>
           <span>Family</span>
         </button>
         <button class="nav-pill" data-page="cameras">
           <span class="mdi mdi-cctv"></span>
           <span>Cameras</span>
         </button>
+        <button class="nav-pill" data-page="media">
+          <span class="mdi mdi-music"></span>
+          <span>Media</span>
+        </button>
       </nav>
 
-      <!-- Page Container -->
-      <div class="pages-wrapper" id="pages-wrapper">
-        <!-- Pages will be rendered by components -->
-        <section class="page" id="page-media" data-page="media"></section>
-        <section class="page" id="page-lights" data-page="lights"></section>
-        <section class="page" id="page-climate" data-page="climate"></section>
-        <section class="page" id="page-calendar" data-page="calendar"></section>
-        <section class="page" id="page-family" data-page="family"></section>
-        <section class="page" id="page-cameras" data-page="cameras"></section>
+      <!-- Pages Container - NEW ORDER -->
+      <div id="pages-wrapper" class="pages-wrapper">
+        <!-- Page 1: Lights -->
+        <section id="page-lights" class="page"></section>
+
+        <!-- Page 2: Climate -->
+        <section id="page-climate" class="page"></section>
+
+        <!-- Page 3: Calendar -->
+        <section id="page-calendar" class="page"></section>
+
+        <!-- Page 4: Family -->
+        <section id="page-family" class="page"></section>
+
+        <!-- Page 5: Cameras -->
+        <section id="page-cameras" class="page"></section>
+
+        <!-- Page 6: Media -->
+        <section id="page-media" class="page"></section>
       </div>
-    </main>
 
-    <!-- Magic Button FAB -->
-    <button id="magic-fab" class="magic-fab hidden">
-      <span class="mdi mdi-lightning-bolt"></span>
-    </button>
-
-    <!-- Modals Container -->
-    <div id="modals"></div>
+      <!-- Magic FAB -->
+      <button id="magic-fab" class="magic-fab">
+        <span class="mdi mdi-lightning-bolt"></span>
+      </button>
+    </div>
   </div>
 
-  <!-- ES6 Module Entry Point -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script type="module" src="src/app.js"></script>
 </body>
 </html>

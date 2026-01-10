@@ -10,15 +10,22 @@ let components = {};
 
 export function initComponents(store, api, config) {
   console.log('🎨 Initializing components...');
+
+  // Initialize all components
   components.header = new Header(store, api, config);
-  components.media = new MediaPlayer(store, api, config);
   components.weather = new WeatherCard(store, api, config);
   components.calendar = new CalendarCard(store, api, config);
   components.family = new FamilyMap(store, api, config);
   components.cameras = new CameraGrid(store, api, config);
+  components.media = new MediaPlayer(store, api, config);
+
+  // Render lights page (first page now)
   renderLightsPage(store, api, config);
+
+  // Initialize navigation
   initNavigation(store, components);
   initMagicFab(store, api, config);
+
   console.log('✅ Components initialized');
 }
 
@@ -35,15 +42,11 @@ function renderLightsPage(store, api, config) {
 
 function initNavigation(store, comps) {
   const pills = document.querySelectorAll('.nav-pill');
-  const pages = ['media', 'lights', 'climate', 'calendar', 'family', 'cameras'];
+  // NEW ORDER: lights, climate, calendar, family, cameras, media
+  const pages = ['lights', 'climate', 'calendar', 'family', 'cameras', 'media'];
 
-  // Scroll active pill into view on load (for mobile)
-  setTimeout(() => {
-    const activePill = document.querySelector('.nav-pill.active');
-    if (activePill) {
-      activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
-  }, 200);
+  // Set initial page to lights
+  store.set('ui.currentPage', 'lights');
 
   pills.forEach(pill => {
     pill.addEventListener('click', () => {
