@@ -1,4 +1,4 @@
-const CACHE_NAME = 'casa-v2.0.4';
+const CACHE_NAME = 'casa-v2.0.5';
 const ASSETS = [
   '/v2/', '/v2/index.html',
   '/v2/css/glass.css', '/v2/css/animations.css', '/v2/css/page-layout.css',

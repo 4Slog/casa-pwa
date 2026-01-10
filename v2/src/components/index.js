@@ -48,30 +48,53 @@ function initNavigation(store, comps) {
   // Set initial page to lights
   store.set('ui.currentPage', 'lights');
 
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const pg = pill.dataset.page;
-      pills.forEach(p => p.classList.toggle('active', p.dataset.page === pg));
-      store.set('ui.currentPage', pg);
+  // MEASURED ALIGNMENT: Navigate using actual pixel measurements
+  function navigateTo(pg) {
+    // Update active pill state
+    pills.forEach(p => p.classList.toggle('active', p.dataset.page === pg));
+    store.set('ui.currentPage', pg);
 
-      // Scroll clicked pill into view
-      pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    // Scroll clicked pill into view
+    const activePill = document.querySelector(`[data-page="${pg}"]`);
+    activePill?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
-      const w = document.getElementById('pages-wrapper');
+    // Handle page scrolling with MEASURED alignment
+    const w = document.getElementById('pages-wrapper');
+    const targetPage = document.getElementById(`page-${pg}`);
+
+    if (w && targetPage) {
+      // Get the exact width of the target page as rendered by the browser
+      const pageWidth = targetPage.offsetWidth;
       const i = pages.indexOf(pg);
-      if (w && i >= 0) w.style.transform = 'translateX(-' + (i * 100) + 'vw)';
 
-      // Page-specific actions
-      if (pg === 'cameras') comps.cameras?.startRefresh();
-      else comps.cameras?.stopRefresh();
-
-      if (pg === 'family' && comps.family?.map) {
-        setTimeout(() => {
-          comps.family.map.invalidateSize();
-          comps.family.fitBounds();
-        }, 300);
+      if (i >= 0) {
+        // Calculate exact pixel offset and apply transform
+        const offset = i * pageWidth;
+        w.style.transform = `translateX(-${offset}px)`;
       }
-    });
+    }
+
+    // Page-specific lifecycle hooks
+    if (pg === 'cameras') comps.cameras?.startRefresh();
+    else comps.cameras?.stopRefresh();
+
+    if (pg === 'family' && comps.family?.map) {
+      setTimeout(() => {
+        comps.family.map.invalidateSize();
+        comps.family.fitBounds();
+      }, 300);
+    }
+  }
+
+  // Attach click handlers to pills
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => navigateTo(pill.dataset.page));
+  });
+
+  // Resize listener to correct alignment when window size changes
+  window.addEventListener('resize', () => {
+    const currentPage = store.get('ui.currentPage');
+    if (currentPage) navigateTo(currentPage);
   });
 
   // Swipe navigation for mobile
@@ -90,10 +113,10 @@ function initNavigation(store, comps) {
     if (Math.abs(diff) > 50) {
       if (diff > 0 && currentIndex < pages.length - 1) {
         // Swipe left - next page
-        document.querySelector('[data-page="' + pages[currentIndex + 1] + '"]')?.click();
+        navigateTo(pages[currentIndex + 1]);
       } else if (diff < 0 && currentIndex > 0) {
         // Swipe right - previous page
-        document.querySelector('[data-page="' + pages[currentIndex - 1] + '"]')?.click();
+        navigateTo(pages[currentIndex - 1]);
       }
     }
   }, { passive: true });
