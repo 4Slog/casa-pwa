@@ -638,3 +638,195 @@ body::before {
   max-width: 100%;
   overflow: hidden;
 }
+
+/* ============================================
+   BUG FIX - STRONGER Page Overflow Containment
+   ============================================ */
+
+/* Nuclear option - clip everything */
+.main-app {
+  overflow: hidden !important;
+  position: relative;
+}
+
+.pages-wrapper {
+  display: flex;
+  width: 600%;
+  overflow: hidden !important;
+  position: relative;
+}
+
+.page {
+  flex: 0 0 calc(100% / 6);
+  width: calc(100% / 6);
+  min-width: 0; /* Prevent flex item from overflowing */
+  overflow-x: hidden !important;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Clip content that tries to escape */
+.page-content {
+  overflow-x: hidden !important;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Force section headers to stay in bounds */
+.section-header {
+  width: calc(100% - var(--space-md) * 2);
+  max-width: calc(100% - var(--space-md) * 2);
+  margin-left: var(--space-md);
+  margin-right: var(--space-md);
+}
+
+/* ============================================
+   Calendar - Scrollable Event Containers
+   ============================================ */
+
+.calendar-events {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.calendar-week {
+  max-height: 350px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+.calendar-events,
+.calendar-week {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for calendar */
+.calendar-events::-webkit-scrollbar,
+.calendar-week::-webkit-scrollbar {
+  width: 4px;
+}
+
+.calendar-events::-webkit-scrollbar-thumb,
+.calendar-week::-webkit-scrollbar-thumb {
+  background: var(--accent-purple);
+  border-radius: 2px;
+}
+
+/* ============================================
+   Family Map - Square Aspect Ratio
+   ============================================ */
+
+.map-container {
+  width: 66.67%; /* 2/3 of page width */
+  max-width: 500px;
+  aspect-ratio: 1 / 1; /* Square */
+  height: auto !important;
+  margin: 0 auto; /* Center it */
+  position: relative;
+}
+
+#family-map {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius);
+}
+
+/* On mobile, allow slightly wider */
+@media (max-width: 600px) {
+  .map-container {
+    width: 85%;
+    max-width: none;
+  }
+}
+
+/* Map controls positioning */
+.map-controls {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 1000;
+}
+
+/* ============================================
+   Camera Featured - Square Aspect Ratio
+   ============================================ */
+
+.camera-featured {
+  width: 66.67%; /* 2/3 of page width */
+  max-width: 500px;
+  margin: 0 auto var(--space-lg) auto; /* Center it */
+  padding: 0;
+  overflow: hidden;
+}
+
+.camera-featured .camera-stream {
+  aspect-ratio: 1 / 1; /* Square */
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.camera-featured .camera-stream img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Camera thumbnails grid - keep full width */
+.camera-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-md);
+  padding: 0 var(--space-md);
+}
+
+.camera-thumb {
+  aspect-ratio: 16 / 9;
+}
+
+/* On mobile, featured camera can be slightly wider */
+@media (max-width: 600px) {
+  .camera-featured {
+    width: 90%;
+    max-width: none;
+  }
+}
+
+/* ============================================
+   Family Page - Improved Layout
+   ============================================ */
+
+.family-page {
+  padding: var(--space-md);
+}
+
+.family-page .section-header {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.family-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  width: 100%;
+}
+
+/* On smaller screens, stack cards */
+@media (max-width: 600px) {
+  .family-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .family-card {
+    padding: var(--space-md);
+  }
+}
